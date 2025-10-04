@@ -1,17 +1,7 @@
-import { Geist, Geist_Mono } from "next/font/google";
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v15-appRouter";
 import "./globals.css";
-import { AppBar, Button, Toolbar, Typography } from "@mui/material";
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+import { Box } from "@mui/material";
+import { Header } from "@/components";
 
 export const metadata = {
   title: "Create Next App",
@@ -21,17 +11,10 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable}`}>
+      <body>
         <AppRouterCacheProvider>
-          <AppBar position="static" sx={{ backgroundColor: "black" }}>
-            <Toolbar>
-              <Typography variant="h5" component="div" sx={{ flexGrow: 1 }}>
-                My Blog
-              </Typography>
-              <Button color="inherit">Create New Post</Button>
-            </Toolbar>
-          </AppBar>
-          {children}
+          <Header />
+          <Box sx={{ padding: 3 }}>{children}</Box>
         </AppRouterCacheProvider>
       </body>
     </html>
