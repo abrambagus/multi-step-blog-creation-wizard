@@ -6,13 +6,17 @@ import {
   Step4Review,
   WizardNavigation,
 } from "@/components";
-import { Card, CardContent, Container } from "@mui/material";
+import { useBlog } from "@/context/BlogContext";
+import { Alert, Card, CardContent, Container, Snackbar } from "@mui/material";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { v4 as uuidv4 } from "uuid";
 
 export default function CreateBlog() {
   const router = useRouter();
+  const { addPost } = useBlog();
   const [step, setStep] = useState(1);
+  const [open, setOpen] = useState(false);
   const [formData, setFormData] = useState({
     title: "",
     author: "",
@@ -23,6 +27,20 @@ export default function CreateBlog() {
 
   const handleChange = (field, value) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
+  };
+
+  const handleSubmit = () => {
+    addPost({
+      ...formData,
+      id: uuidv4(),
+      date: new Date().toLocaleDateString(),
+    });
+
+    setOpen(true);
+
+    setTimeout(() => {
+      router.push("/");
+    }, 1500);
   };
 
   const isDisabled = () => {
@@ -55,12 +73,21 @@ export default function CreateBlog() {
         </CardContent>
       </Card>
       <WizardNavigation
-        onBack={step > 1 ? () => setStep(step - 1) : () => router("/")}
+        onBack={step > 1 ? () => setStep(step - 1) : () => router.push("/")}
         onNext={step < 4 ? () => setStep(step + 1) : undefined}
-        onSubmit={step === 4 ? null : undefined}
+        onSubmit={step === 4 ? handleSubmit : undefined}
         isLastStep={step === 4}
         isDisabled={isDisabled}
       />
+      <Snackbar
+        open={open}
+        onClose={() => setOpen(false)}
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+      >
+        <Alert severity="success" sx={{ width: "100%" }}>
+          Blog post submitted successfully!
+        </Alert>
+      </Snackbar>
     </Container>
   );
 }

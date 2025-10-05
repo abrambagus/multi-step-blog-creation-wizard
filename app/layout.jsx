@@ -2,6 +2,7 @@ import { AppRouterCacheProvider } from "@mui/material-nextjs/v15-appRouter";
 import "./globals.css";
 import { Box } from "@mui/material";
 import { Header } from "@/components";
+import { BlogProvider } from "@/context/BlogContext";
 
 export const metadata = {
   title: "Create Next App",
@@ -13,8 +14,10 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body>
         <AppRouterCacheProvider>
-          <Header />
-          <Box sx={{ padding: 3 }}>{children}</Box>
+          <BlogProvider>
+            <Header />
+            <Box sx={{ padding: 3 }}>{children}</Box>
+          </BlogProvider>
         </AppRouterCacheProvider>
       </body>
     </html>
